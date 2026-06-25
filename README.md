@@ -433,21 +433,6 @@ Expected — 0% packet loss on direct link.
 
 ---
 
-## Step 9 — Run the Full Recorded Demo
-
-This single script runs all steps above in sequence and saves everything to a timestamped log file:
-
-```bash
-sudo bash ~/bgpost-lab/scripts/record_topo1.sh
-```
-
-The log file is saved at:
-```
-~/bgpost-lab/topo1_demo_YYYYMMDD_HHMMSS.log
-```
-
----
-
 ## Stopping the Lab
 
 ```bash
@@ -457,54 +442,6 @@ sudo docker compose down --remove-orphans
 
 ---
 
-## Troubleshooting
-
-### Container keeps restarting
-```bash
-sudo docker logs bgpost_as1 2>&1 | tail -20
-```
-
-### BGP not establishing
-Check if certs are correctly mounted:
-```bash
-sudo docker exec bgpost_as1 ls /certs/
-```
-Should show: `ca.crt  router.crt  router.key  bgpost_config.json`
-
-### Tunnel not coming up after eth0 down
-Check tunnel_manager is running:
-```bash
-sudo docker exec bgpost_as3 ps aux | grep tunnel
-```
-
-Check for stale tunnel from a previous run:
-```bash
-sudo docker exec bgpost_as3 ip link show gre-backup
-# If it exists from a previous run, clean it:
-sudo docker exec bgpost_as3 ip tunnel del gre-backup
-```
-
-### Port 179 already in use
-Check for another BGP daemon running on the host:
-```bash
-sudo ss -tlnp6 | grep 179
-# Kill it if found:
-sudo kill -9 <PID>
-```
-
-### Interface eth0/eth1 swapped
-Check which interface has which IP:
-```bash
-sudo docker exec bgpost_as3 ip addr show eth0 | grep inet
-sudo docker exec bgpost_as3 ip addr show eth1 | grep inet
-```
-
-`eth0` should be `172.30.23.3` (main, toward AS2).
-`eth1` should be `172.30.13.3` (backup, toward AS1).
-
-If swapped, the `priority: 1000` on `net_as2_as3` in `docker-compose.yml` fixes this — rebuild with `docker compose down && docker compose up --build -d`.
-
----
 
 ## What This Demonstrates
 
