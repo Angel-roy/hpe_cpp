@@ -39,10 +39,6 @@ Runs 4 Docker containers simulating a real BGP anycast network where:
 sudo apt-get update
 sudo apt-get install -y docker.io docker-compose-plugin git openssl
 
-# Add your user to docker group (avoids needing sudo every time)
-sudo usermod -aG docker $USER
-newgrp docker
-
 # Build the base BIRD image (do this once)
 git clone https://github.com/IPNetworkingLab/BGPoTLS.git
 cd BGPoTLS
@@ -142,7 +138,6 @@ Expected output:
 ✔ Container anycast-replica-b    Started
 ✔ Container client-node          Started
 ```
-
 ---
 
 ## Step 4 — Verify Everything Is Running
