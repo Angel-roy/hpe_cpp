@@ -1,0 +1,19 @@
+[req]
+distinguished_name = req_distinguished_name
+req_extensions     = v3_req
+prompt             = no
+
+[req_distinguished_name]
+C  = BE
+ST = Wallonia
+O  = BGPoST-Lab
+CN = as1.bgpost.lab
+
+[v3_req]
+subjectAltName = @alt_names
+keyUsage       = digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth, serverAuth
+
+[alt_names]
+DNS.1 = as1.bgpost.lab
+IP.1  = 2001:db8:12::1

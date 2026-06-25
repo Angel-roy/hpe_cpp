@@ -1,0 +1,1 @@
+{"anycast_prefix":"2001:db8:ff::/48","service":"dns","health_check":{"port":53,"protocol":"udp","query":"example.com","interval":10},"as_number":65102}
