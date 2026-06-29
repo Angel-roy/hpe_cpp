@@ -1,0 +1,77 @@
+networks:
+  net_as1_as2:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.30.12.0/24"
+
+  net_as1_as3:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.30.13.0/24"
+
+  net_as2_as3:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.30.23.0/24"
+
+services:
+  as1:
+    build: ./as1
+    container_name: bgpost_as1
+    hostname: as1.bgpost.lab
+    networks:
+      net_as1_as2:
+        ipv4_address: "172.30.12.2"
+      net_as1_as3:
+        ipv4_address: "172.30.13.2"
+    volumes:
+      - ./as1/certs:/certs:ro
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
+
+  as2:
+    build: ./as2
+    container_name: bgpost_as2
+    hostname: as2.bgpost.lab
+    networks:
+      net_as1_as2:
+        ipv4_address: "172.30.12.3"
+      net_as2_as3:
+        ipv4_address: "172.30.23.2"
+    volumes:
+      - ./as2/certs:/certs:ro
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
+
+  as3:
+    build: ./as3
+    container_name: bgpost_as3
+    hostname: as3.bgpost.lab
+    networks:
+      net_as2_as3:
+        ipv4_address: "172.30.23.3"
+      net_as1_as3:
+        ipv4_address: "172.30.13.3"
+    volumes:
+      - ./as3/certs:/certs:ro
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
+    depends_on:
+      - as1
+      - as2

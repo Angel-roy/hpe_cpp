@@ -1,0 +1,12 @@
+{
+"prefixes":["10.3.0.0/16"],
+"tunnel":{
+"type":"GRE",
+"local_addr":"172.30.23.3",
+"remote_addr":"172.30.23.2",
+"backup_via":"172.30.13.2",
+"keepalive_interval":5,
+"bfd":true
+},
+"as_number":65003
+}
