@@ -24,10 +24,4 @@ This project implements a self-healing enterprise-style routing lab using BIRD, 
 | hpe-r8 | Stub branch router, hpe-h2 gateway |
 | hpe-r9 | ISP/upstream router, hpe-h3 gateway |
 
-## Current Measured Results
 
-| Mechanism | Result |
-|---|---:|
-| BFD WAN edge failure detection | 57 ms |
-| OSPF core link recovery | 489 ms |
-| OSPF packet loss during failure | 2.87% |
